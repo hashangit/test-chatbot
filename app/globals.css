@@ -1,26 +1,145 @@
-@import "tailwindcss";
+/* app/globals.css */
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* 1. Tailwind CSS Directives (PostCSS will process these) */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* 2. Define your CSS variables for theming (Shadcn UI convention) */
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Light Mode Variables */
+    --background: oklch(1 0 0); /* White */
+    --foreground: oklch(0.145 0 0); /* Almost Black */
+
+    --muted: #f1f5f9; /* Light gray for page background (slate-100 equivalent) */
+    --muted-foreground: oklch(0.556 0 0); /* Medium gray */
+
+    --card: oklch(1 0 0); /* White - for chat container background */
+    --card-foreground: oklch(0.145 0 0); /* Almost Black */
+
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+
+    --primary: oklch(0.52 0.18 255); /* Blue */
+    --primary-foreground: oklch(0.985 0 0); /* Light color for text on primary */
+
+    --secondary: oklch(0.93 0.01 255); /* Light grayish blue (for AI messages, slate-200 equivalent) */
+    --secondary-foreground: oklch(0.205 0 0); /* Darker text for AI messages */
+
+    --accent: oklch(0.90 0.02 255); 
+    --accent-foreground: oklch(0.205 0 0);
+
+    --destructive: oklch(0.577 0.245 27.325); /* Red */
+    --destructive-foreground: oklch(0.985 0 0);
+
+    --border: oklch(0.88 0.01 255); /* Default border (slate-300 equivalent) */
+    --input: oklch(0.88 0.01 255);  /* Default input border */
+    --ring: oklch(0.52 0.18 255 / 0.7); /* Ring color (blue, slightly transparent) */
+
+    --radius: 0.75rem; 
+
+    /* Chart and Sidebar colors (keeping them as they were) */
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
+
+    /* Scrollbar specific colors based on mock's appearance */
+    --scrollbar-track: #f1f1f1;
+    --scrollbar-thumb: #c1c1c1;
+    --scrollbar-thumb-hover: #a1a1a1;
+  }
+
+  .dark {
+    /* Dark Mode Variables */
+    --background: oklch(0.10 0.02 255); 
+    --foreground: oklch(0.90 0.02 255); 
+
+    --muted: #334155; 
+    --muted-foreground: oklch(0.60 0.02 255);
+
+    --card: oklch(0.12 0.02 255); 
+    --card-foreground: oklch(0.90 0.02 255);
+
+    --popover: oklch(0.12 0.02 255);
+    --popover-foreground: oklch(0.90 0.02 255);
+
+    --primary: oklch(0.60 0.20 255); 
+    --primary-foreground: oklch(0.98 0.02 255); 
+
+    --secondary: oklch(0.25 0.03 255); 
+    --secondary-foreground: oklch(0.88 0.02 255); 
+
+    --accent: oklch(0.30 0.03 255);
+    --accent-foreground: oklch(0.88 0.02 255);
+
+    --destructive: oklch(0.50 0.25 15); 
+    --destructive-foreground: oklch(0.90 0.05 15);
+
+    --border: oklch(0.35 0.02 255); 
+    --input: oklch(0.35 0.02 255);  
+    --ring: oklch(0.60 0.20 255 / 0.7);
+
+    /* Dark scrollbar colors */
+    --scrollbar-track: #2d3748; /* Example dark track */
+    --scrollbar-thumb: #4a5568; /* Example dark thumb */
+    --scrollbar-thumb-hover: #718096; /* Example dark thumb hover */
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* 3. Apply base styles to elements */
+@layer base {
+  body {
+    /* MODIFIED: Directly use CSS variables instead of @apply for these properties */
+    background-color: var(--background);
+    color: var(--foreground);
+    @apply antialiased; /* antialiased is a standard utility and should work */
+    
+    font-feature-settings: "rlig" 1, "calt" 1;
+    min-height: 100vh;
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  html,
+  body,
+  #__next { 
+    height: 100%; 
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* 4. Custom global styles (like scrollbar) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+/* For Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
